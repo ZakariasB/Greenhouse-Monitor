@@ -21,17 +21,27 @@ def read_knock():
     return not knock_sensor.value()  # Inverted logic for pull-up
 
 def main():
-    wifiConnection.connect()
-    mqtt.connect()
+    try:
+        wifiConnection.connect()
+        mqtt.connect()
 
-    while True:
-        temperature = read_temperature()
-        mqtt.publish(keys.AIO_FEED_TEMPERATURE, str(temperature))
+        while True:
+            temperature = read_temperature()
+            mqtt.publish(keys.AIO_FEED_TEMPERATURE, str(temperature))
 
-        knock = read_knock()
-        mqtt.publish(keys.AIO_FEED_KNOCK, '1' if knock else '0')
+            knock = read_knock()
+            mqtt.publish(keys.AIO_FEED_KNOCK, '1' if knock else '0')
 
-        time.sleep(60)  # Adjust the interval as needed
+            time.sleep(60)  # Adjust the interval as needed
+
+    except KeyboardInterrupt:
+        print("Program interrupted by user.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        mqtt.disconnect()
+        wifiConnection.disconnect()
+        print("Cleaned up and disconnected.")
 
 if __name__ == '__main__':
     main()

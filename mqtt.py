@@ -15,3 +15,9 @@ def publish(feed, message):
     print(f'Sent {message} to {feed}')
 
 
+def disconnect():
+    global client
+    if client is not None:
+        client.disconnect()
+        client = None
+        print("Disconnected from Adafruit IO.")
