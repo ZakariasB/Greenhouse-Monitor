@@ -9,7 +9,7 @@ adc = machine.ADC(26)  # Analog pin for MCP9700
 scale_factor = 3.3 / 65535  # Scale factor for 16-bit ADC
 
 # Knock sensor setup
-knock_sensor = machine.Pin(27, machine.Pin.IN, machine.Pin.PULLUP)
+knock_sensor = machine.Pin(27, machine.Pin.IN)
 
 def read_temperature():
     adc_value = adc.read_u16()
